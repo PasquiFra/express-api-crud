@@ -5,8 +5,6 @@ const errorHandler = require('../middlewares/errorHandler')
 
 const store = async (req, res) => {
 
-    console.log("entrato posts 1")
-
     const { title, slug, image, content, categoryId, tags } = req.body
 
     const data = {
@@ -34,7 +32,6 @@ const store = async (req, res) => {
 
 const showByPublished = async (req, res) => {
 
-    console.log("entrato showByPublished")
     try {
         const posts = await prisma.post.findMany({
             where: {
@@ -60,7 +57,6 @@ const showByPublished = async (req, res) => {
 
 const showByString = async (req, res) => {
     const string = req.query.string;
-    console.log("entrato showByString", string);
 
     try {
         const posts = await prisma.post.findMany({
@@ -86,8 +82,6 @@ const showByString = async (req, res) => {
 }
 
 const index = async (req, res) => {
-
-    console.log("entrato posts 2")
 
     try {
         if (req.query.string) {
@@ -115,8 +109,6 @@ const index = async (req, res) => {
 }
 
 const show = async (req, res) => {
-
-    console.log("entrato posts 3")
 
     try {
         const slug = req.params.slug;
@@ -146,8 +138,6 @@ const show = async (req, res) => {
 }
 
 const update = async (req, res) => {
-
-    console.log("entrato posts 4")
 
     const slugToChange = req.params.slug
 
