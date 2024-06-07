@@ -149,6 +149,8 @@ const update = async (req, res) => {
 
     console.log("entrato posts 4")
 
+    const slugToChange = req.params.slug
+
     try {
         const { title, slug, image, content, categoryId, tags } = req.body
 
@@ -166,7 +168,7 @@ const update = async (req, res) => {
             data.categoryId = categoryId;
         }
 
-        const post = await prisma.post.update({ where: { slug }, data })
+        const post = await prisma.post.update({ where: { slug: slugToChange }, data })
         res.json(post);
     }
     catch (err) {

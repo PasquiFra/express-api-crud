@@ -15,13 +15,8 @@ const port = 3000;
 app.use(express.json());
 
 
-console.log("entrato app.js /posts")
 app.use('/posts', postsRouter);
-
-console.log("entrato app.js /categories")
 app.use('/categories', categoriesRouter);
-
-console.log("entrato app.js /tags")
 app.use('/tags', tagsRouter);
 
 //? middlewares per errori di rotta/generici
