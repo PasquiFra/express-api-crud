@@ -32,38 +32,57 @@ const store = async (req, res) => {
     }
 }
 
-const showByPublished = (cf) => {
-    prisma.post.findMany({
-        where: {
-            published: true
-        },
-        include: {
-            tags: {
-                select: { name: true }
+const showByPublished = async (req, res) => {
+
+    console.log("entrato showByPublished")
+    try {
+        const posts = await prisma.post.findMany({
+            where: {
+                published: true
             },
-            category: {
-                select: { name: true }
+            include: {
+                tags: {
+                    select: { name: true }
+                },
+                category: {
+                    select: { name: true }
+                }
             }
-        }
-    })
-        .then(posts => cf(posts))
-        .catch(err => console.error(err));
+        })
+        return res.json({
+            data: posts,
+        });
+    }
+    catch (err) {
+        errorHandler(err, req, res);
+    }
 }
 
-const showByString = (string, cf) => {
-    prisma.post.findMany({
-        where: { content: { contains: string } },
-        include: {
-            category: {
-                select: { name: true }
+const showByString = async (req, res) => {
+    const string = req.query.string;
+    console.log("entrato showByString", string);
+
+    try {
+        const posts = await prisma.post.findMany({
+            where: {
+                OR: [
+                    { title: { contains: string } },
+                    { content: { contains: string } }
+                ]
             },
-            tags: {
-                select: { name: true }
+            include: {
+                category: {
+                    select: { name: true }
+                },
+                tags: {
+                    select: { name: true }
+                }
             }
-        }
-    })
-        .then(posts => cf(posts))
-        .catch(err => console.error(err));
+        });
+        return res.json({ data: posts });
+    } catch (err) {
+        errorHandler(err, req, res);
+    }
 }
 
 const index = async (req, res) => {
@@ -72,11 +91,11 @@ const index = async (req, res) => {
 
     try {
         if (req.query.string) {
-            showByString(query.string, cf);
+            await showByString(req, res);
         } else if (req.query.published) {
-            showByPublished(cf);
+            await showByPublished(req, res);
         } else {
-            await prisma.post.findMany({
+            const posts = await prisma.post.findMany({
                 include: {
                     tags: {
                         select: { name: true }
@@ -88,9 +107,6 @@ const index = async (req, res) => {
             })
             res.json({
                 data: posts,
-                page: page,
-                totalItems,
-                totalPages
             });
         }
     } catch (err) {
