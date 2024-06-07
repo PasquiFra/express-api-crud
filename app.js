@@ -4,9 +4,9 @@ const app = express();
 //import dei middlewares,routers...
 const routeNotFound = require('./middlewares/routeNotFound')
 const errorHandler = require('./middlewares/errorHandler')
-const postsRouter = require("./routers/posts")
-const categoriesRouter = require("./routers/categories")
-const tagsRouter = require("./routers/tags")
+const postsRouter = require("./routers/posts.js")
+const categoriesRouter = require("./routers/categories.js")
+const tagsRouter = require("./routers/tags.js")
 
 
 require("dotenv").config();
@@ -14,8 +14,14 @@ const port = 3000;
 
 app.use(express.json());
 
+
+console.log("entrato app.js /posts")
 app.use('/posts', postsRouter);
+
+console.log("entrato app.js /categories")
 app.use('/categories', categoriesRouter);
+
+console.log("entrato app.js /tags")
 app.use('/tags', tagsRouter);
 
 //? middlewares per errori di rotta/generici

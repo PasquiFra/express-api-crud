@@ -1,8 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
-router.post("/",)
-router.get("/",)
+const {
+    store,
+    index,
+    show,
+    update,
+    destroy
+} = require('../controllers/posts');
 
-router.use("/:slug", validator)
+// Rotte di /posts
 
+console.log("entrato rotte /posts")
+
+router.post('/', store);
+router.get('/', index);
+router.get('/:slug', show);
+router.put('/:slug', update);
+router.delete('/:slug', destroy)
+
+module.exports = router;
